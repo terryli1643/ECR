@@ -1,4 +1,4 @@
-package ecr.commerce.pricing;
+package ecr.commerce.price;
 
 public class Adjustment {
     private String mPromotionId;
