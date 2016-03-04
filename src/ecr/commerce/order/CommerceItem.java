@@ -2,6 +2,13 @@ package ecr.commerce.order;
 
 import ecr.commerce.price.PriceInfo;
 
+/**
+ * 
+ * COmmerceItem is stand for a sku object with a qantity and price when it is added to cart.
+ * 
+ * @author: terryli
+ * @version: 1.0, Mar 4, 2016
+ */
 public class CommerceItem {
     private String    mSkuId;
     private PriceInfo mPriceInfo;

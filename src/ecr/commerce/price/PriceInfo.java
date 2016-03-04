@@ -3,6 +3,13 @@ package ecr.commerce.price;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+* This priceInfo is used for comerceItem, and this object is calculated by a lot of logics.
+*		
+* @author: terryli
+* @version: 1.0, Mar 4, 2016
+ */
 public class PriceInfo {
     private double            mAmount;
     private double            mDiscount;

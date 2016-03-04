@@ -1,5 +1,12 @@
 package ecr.commerce.price;
 
+/**
+ * 
+ * This PriceDetail object used to save every change of price by a price calculator.
+ * 
+ * @author: terryli
+ * @version: 1.0, Mar 4, 2016
+ */
 public class PriceDetail {
     private int       mQuantity;
     private double    mAmount;
