@@ -23,7 +23,8 @@ public class ReceiptTempalte {
             System.out.print(item.getUnitPrice() + "(元)");
             System.out.print(",小计：");
             System.out.print(item.getSubtotal() + "(元)");
-            if (item.getSave().doubleValue() > 0) {
+            if (item.getSave().doubleValue() > 0 && item.getPromotionName() != null
+                    && item.getPromotionName().equals("95%Discount")) {
                 System.out.print(",节省");
                 System.out.print(item.getSave() + "(元)");
             }
@@ -31,7 +32,7 @@ public class ReceiptTempalte {
         }
         System.out.println("----------------------");
         for (Item item : mDiscountItems) {
-            if (item.getPromotionName() != null && item.getPromotionName().equals("BuyTwoGetOne")) {
+            if (item.getPromotionName() != null && item.getPromotionName().equals("")) {
                 System.out.println("买二赠一商品：");
                 break;
             }

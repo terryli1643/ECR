@@ -146,6 +146,7 @@ public class OrderTools {
                     item.setSubtotal(commerceItem.getPriceInfo().getAmount());
                     item.setSave(commerceItem.getPriceInfo().getSaved());
                     item.setUnit(product.getUnit());
+                    item.setPromotionName(commerceItem.getPriceInfo().getPriceDetails().get(0).getPromotionName());
                     if (commerceItem.getPriceInfo().getPriceDetails().size() > 1) {
                         PriceDetail priceDetail = commerceItem.getPriceInfo().getPriceDetails().get(1);
                         // Set discounted item property.

@@ -69,7 +69,6 @@ public class ItemDiscountCalculator implements PricingCalculator {
         priceDetail.setQuantity(pQualifierItem.getQuantity());
         priceDetail.setDiscounted(true);
         priceDetail.setPromotionName(pPromotion.getId());
-
         pPriceInfo.setDiscounted(true);
     }
 
