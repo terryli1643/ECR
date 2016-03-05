@@ -1,5 +1,7 @@
 package ecr.commerce.pricing;
 
+import java.math.BigDecimal;
+
 import ecr.commerce.order.CommerceItem;
 
 /**
@@ -11,7 +13,7 @@ import ecr.commerce.order.CommerceItem;
 public class QualifiedItem {
     private int          mQuantity;
     private CommerceItem mCommerceItem;
-    private double       mDiscount;
+    private BigDecimal   mDiscount;
 
 
 
@@ -37,7 +39,7 @@ public class QualifiedItem {
     /**
      * @return the discount
      */
-    public double getDiscount() {
+    public BigDecimal getDiscount() {
         return mDiscount;
     }
 
@@ -47,7 +49,7 @@ public class QualifiedItem {
      * @param pDiscount
      *            the discount to set
      */
-    public void setDiscount(double pDiscount) {
+    public void setDiscount(BigDecimal pDiscount) {
         mDiscount = pDiscount;
     }
 

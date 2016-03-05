@@ -1,44 +1,44 @@
 package ecr.commerce.promotion;
 
 public class BuyOneGetOnePromotion extends Promotion{
-    private int mDiscountConditionQantity;
-    private int mDiscountOfferQantity;
+    private int mDiscountConditionquantity;
+    private int mDiscountOfferquantity;
 
 
 
     /**
-     * @return the discountConditionQantity
+     * @return the discountConditionquantity
      */
-    public int getDiscountConditionQantity() {
-        return mDiscountConditionQantity;
+    public int getDiscountConditionquantity() {
+        return mDiscountConditionquantity;
     }
 
 
 
     /**
-     * @param pDiscountConditionQantity
-     *            the discountConditionQantity to set
+     * @param pDiscountConditionquantity
+     *            the discountConditionquantity to set
      */
-    public void setDiscountConditionQantity(int pDiscountConditionQantity) {
-        mDiscountConditionQantity = pDiscountConditionQantity;
+    public void setDiscountConditionquantity(int pDiscountConditionquantity) {
+        mDiscountConditionquantity = pDiscountConditionquantity;
     }
 
 
 
     /**
-     * @return the discountOfferQantity
+     * @return the discountOfferquantity
      */
-    public int getDiscountOfferQantity() {
-        return mDiscountOfferQantity;
+    public int getDiscountOfferquantity() {
+        return mDiscountOfferquantity;
     }
 
 
 
     /**
-     * @param pDiscountOfferQantity
-     *            the discountOfferQantity to set
+     * @param pDiscountOfferquantity
+     *            the discountOfferquantity to set
      */
-    public void setDiscountOfferQantity(int pDiscountOfferQantity) {
-        mDiscountOfferQantity = pDiscountOfferQantity;
+    public void setDiscountOfferquantity(int pDiscountOfferquantity) {
+        mDiscountOfferquantity = pDiscountOfferquantity;
     }
 }

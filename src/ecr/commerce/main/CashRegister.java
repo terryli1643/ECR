@@ -1,5 +1,6 @@
-package ecr.commerce.server;
+package ecr.commerce.main;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +8,10 @@ import ecr.commerce.calculator.BuyOneGetOnePromotionCalculator;
 import ecr.commerce.calculator.ItemDiscountCalculator;
 import ecr.commerce.calculator.UnitPriceCalculator;
 import ecr.commerce.catalog.Product;
+import ecr.commerce.order.CommerceItem;
+import ecr.commerce.order.Order;
 import ecr.commerce.order.OrderTools;
+import ecr.commerce.order.SettlementList;
 import ecr.commerce.pricing.PricingEngine;
 import ecr.commerce.pricing.PricingTools;
 import ecr.commerce.promotion.BuyOneGetOnePromotion;
@@ -16,22 +20,39 @@ import ecr.commerce.promotion.Promotion;
 
 /**
  * 
- * This class simulate a server context, when the server startup, some application level entities will be initiated. And
- * this class also is a factory class for these entities.
+ * This class simulate a backend system context, when the system startup, some application level entities will be
+ * initiated. meantime, the backend system supply the checkout funtion and print receipt funtion.
  * 
  * @author: Terry
  * @version: 1.0, Mar 4, 2016
  */
-public class ApplicationContext {
-    private PricingEngine          mPricingEngine;
-    private Map<String, Product>   mProducts;
-    private Map<String, Promotion> mPromotions;
-    private PricingTools           mPricingTools = new PricingTools();
-    private OrderTools             mOrderTools   = new OrderTools();
+public class CashRegister {
+    private static CashRegister mCashRegister = new CashRegister();
+
+    public Map<String, Product>   mProducts     = new HashMap<>();
+    public Map<String, Promotion> mPromotions   = new HashMap<>();
+    public PricingTools           mPricingTools = new PricingTools();
+    public OrderTools             mOrderTools   = new OrderTools();
+    public PricingEngine          mPricingEngine;
 
 
 
-    public void initContext() {
+    private CashRegister() {
+
+    }
+
+
+
+    public static CashRegister getCashRegisterInstance() {
+        if (mCashRegister == null) {
+            mCashRegister = new CashRegister();
+        }
+        return mCashRegister;
+    }
+
+
+
+    public void start() {
         initProductData();
         initPromotionData();
         initPricingEngine();
@@ -39,78 +60,77 @@ public class ApplicationContext {
 
 
 
-    public void initProductData() {
-        Map<String, Product> products = new HashMap<>();
-        Product cocacola = new Product();
-        cocacola.setId("cocacola");
-        cocacola.setDisplayName("可口可乐");
-        cocacola.setUnitPrice(3);
+    public void checkout(SettlementList pSettlementList) {
+        Order order = mOrderTools.createOrder();
+        String json = mOrderTools.outputSettlementListASJSON(pSettlementList.getBarCodeList());
+        System.out.println(json);
 
-        Product badminton = new Product();
-        badminton.setId("badminton");
-        badminton.setDisplayName("羽毛球");
-        badminton.setUnitPrice(1);
-
-        Product apple = new Product();
-        apple.setId("apple");
-        apple.setDisplayName("苹果");
-        apple.setUnitPrice(5);
-
-        products.put(cocacola.getId(), cocacola);
-        products.put(badminton.getId(), badminton);
-        products.put(apple.getId(), apple);
-
-        setProducts(products);
+        mOrderTools.addProductsToOrder(json, order);
+        for (CommerceItem commerceItem : order.getCommerceItems()) {
+            mPricingEngine.priceItem(commerceItem);
+        }
+        mOrderTools.printReceipt(order);
     }
 
 
 
-    public void initPromotionData() {
-        Map<String, Promotion> promotions = new HashMap<>();
+    private void initProductData() {
+        Product cocacola = new Product();
+        cocacola.setId("cocacola");
+        cocacola.setDisplayName("可口可乐");
+        cocacola.setBarCode("ITEM000003");
+        cocacola.setUnitPrice(new BigDecimal("3"));
+        cocacola.setUnit("瓶");
+
+        Product badminton = new Product();
+        badminton.setId("badminton");
+        badminton.setDisplayName("羽毛球");
+        badminton.setBarCode("ITEM000001");
+        badminton.setUnitPrice(new BigDecimal("1"));
+        badminton.setUnit("个");
+
+        Product apple = new Product();
+        apple.setId("apple");
+        apple.setDisplayName("苹果");
+        apple.setBarCode("ITEM000005");
+        apple.setUnitPrice(new BigDecimal("5.5"));
+        apple.setUnit("斤");
+
+        getProducts().put(cocacola.getId(), cocacola);
+        getProducts().put(badminton.getId(), badminton);
+        getProducts().put(apple.getId(), apple);
+
+    }
+
+
+
+    private void initPromotionData() {
         BuyOneGetOnePromotion bogo = new BuyOneGetOnePromotion();
         bogo.setId("BuyTwoGetOne");
-        bogo.setDiscountConditionQantity(2);
-        bogo.setDiscountOfferQantity(1);
+        bogo.setDiscountConditionquantity(2);
+        bogo.setDiscountOfferquantity(1);
 
         ItemDiscountPromotion itemDiscount = new ItemDiscountPromotion();
         itemDiscount.setId("95%Discount");
         itemDiscount.setDiscount(95);
 
-        promotions.put(bogo.getId(), bogo);
-        promotions.put(itemDiscount.getId(), itemDiscount);
+        getPromotions().put(bogo.getId(), bogo);
+        getPromotions().put(itemDiscount.getId(), itemDiscount);
 
-        setPromotions(promotions);
     }
 
 
 
-    public void initPricingEngine() {
+    private void initPricingEngine() {
         UnitPriceCalculator unitPriceCalculator = new UnitPriceCalculator();
         BuyOneGetOnePromotionCalculator bogoCalculator = new BuyOneGetOnePromotionCalculator();
         ItemDiscountCalculator itemDiscountCalculator = new ItemDiscountCalculator();
 
         PricingEngine pricingEngine = new PricingEngine(unitPriceCalculator, bogoCalculator, itemDiscountCalculator);
         pricingEngine.setPromotions(getPromotions().values());
-        setPricingEngine(pricingEngine);
-    }
-
-
-
-    /**
-     * @return the pricingEngine
-     */
-    public PricingEngine getPricingEngine() {
-        return mPricingEngine;
-    }
-
-
-
-    /**
-     * @param pPricingEngine
-     *            the pricingEngine to set
-     */
-    public void setPricingEngine(PricingEngine pPricingEngine) {
-        mPricingEngine = pPricingEngine;
+        pricingEngine.setPricingTools(getPricingTools());
+        pricingEngine.setOrderTools(getOrderTools());
+        mPricingEngine = pricingEngine;
     }
 
 
@@ -189,4 +209,22 @@ public class ApplicationContext {
         mOrderTools = pOrderTools;
     }
 
+
+
+    /**
+     * @return the mCashRegister
+     */
+    public static CashRegister getmCashRegister() {
+        return mCashRegister;
+    }
+
+
+
+    /**
+     * @param pMCashRegister
+     *            the mCashRegister to set
+     */
+    public static void setmCashRegister(CashRegister pMCashRegister) {
+        mCashRegister = pMCashRegister;
+    }
 }

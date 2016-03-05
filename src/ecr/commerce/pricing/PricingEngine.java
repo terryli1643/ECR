@@ -1,10 +1,13 @@
 package ecr.commerce.pricing;
 
+import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Map;
 
 import ecr.commerce.calculator.PricingCalculator;
+import ecr.commerce.catalog.Product;
 import ecr.commerce.order.CommerceItem;
+import ecr.commerce.order.OrderTools;
+import ecr.commerce.price.PriceDetail;
 import ecr.commerce.price.PriceInfo;
 import ecr.commerce.promotion.Promotion;
 
@@ -20,6 +23,7 @@ public class PricingEngine {
     private PricingCalculator[]   mCalculators;
     private Collection<Promotion> mPromotions;
     private PricingTools          mPricingTools;
+    private OrderTools            mOrderTools;
 
 
 
@@ -29,17 +33,25 @@ public class PricingEngine {
 
 
 
-    public PriceInfo priceItem(CommerceItem pCommerceItem, Collection<Promotion> pPromotions,
-            Map<String, Object> pParameters) {
-        PriceInfo priceInfo = pCommerceItem.getPriceInfo();
-        if (priceInfo == null) {
-            PriceInfo info = getPricingTools().createPriceInfo();
-            for (PricingCalculator calculator : mCalculators) {
-                calculator.priceItem(info, pCommerceItem, getPromotions());
-            }
-            pCommerceItem.setPriceInfo(info);
+    public void priceItem(CommerceItem pCommerceItem) {
+        Product product = getOrderTools().findProductByBarId(pCommerceItem.getProductId());
+        PriceInfo info = getPricingTools().createPriceInfo(product.getUnitPrice());
+        pCommerceItem.setPriceInfo(info);
+        for (PricingCalculator calculator : mCalculators) {
+            calculator.priceItem(info, pCommerceItem, getPromotions());
         }
-        return null;
+
+        // Set priceInfo amount according to the PriceDetails.
+        BigDecimal amount = new BigDecimal(0);
+        for (PriceDetail priceDetail : info.getPriceDetails()) {
+            amount = amount.add(priceDetail.getAmount());
+        }
+        info.setAmount(amount);
+
+        // Set priceInfo saved according to the amount. unitprice * quantity - current amount
+        BigDecimal save = new BigDecimal(pCommerceItem.getQuantity()).multiply(product.getUnitPrice())
+                .subtract(info.getAmount());
+        info.setSaved(save);
     }
 
 
@@ -49,6 +61,16 @@ public class PricingEngine {
      */
     public PricingTools getPricingTools() {
         return mPricingTools;
+    }
+
+
+
+    /**
+     * @param pPricingTools
+     *            the pricingTools to set
+     */
+    public void setPricingTools(PricingTools pPricingTools) {
+        mPricingTools = pPricingTools;
     }
 
 
@@ -68,5 +90,24 @@ public class PricingEngine {
      */
     public void setPromotions(Collection<Promotion> pPromotions) {
         mPromotions = pPromotions;
+    }
+
+
+
+    /**
+     * @return the orderTools
+     */
+    public OrderTools getOrderTools() {
+        return mOrderTools;
+    }
+
+
+
+    /**
+     * @param pOrderTools
+     *            the orderTools to set
+     */
+    public void setOrderTools(OrderTools pOrderTools) {
+        mOrderTools = pOrderTools;
     }
 }

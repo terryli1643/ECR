@@ -1,7 +1,9 @@
 package ecr.commerce.calculator;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
+import ecr.commerce.main.CashRegister;
 import ecr.commerce.order.CommerceItem;
 import ecr.commerce.price.PriceDetail;
 import ecr.commerce.price.PriceInfo;
@@ -18,7 +20,7 @@ import ecr.commerce.promotion.Promotion;
  */
 public class UnitPriceCalculator implements PricingCalculator {
 
-    private PricingTools mPricingTools;
+    private PricingTools mPricingTools = CashRegister.getCashRegisterInstance().getPricingTools();
 
 
 
@@ -33,7 +35,8 @@ public class UnitPriceCalculator implements PricingCalculator {
         // Here we just set a base price to the priceDetail which used to calculate promotion price. The base price is
         // unit price.
         PriceDetail priceDetail = getPricingTools().creatPriceDetail();
-        priceDetail.setAmount(pCommerceItem.getPriceInfo().getUnitPrice());
+        priceDetail.setAmount(
+                pCommerceItem.getPriceInfo().getUnitPrice().multiply(new BigDecimal(pCommerceItem.getQuantity())));
         priceDetail.setQuantity(pCommerceItem.getQuantity());
         priceDetail.setDiscounted(false);
         pPriceInfo.getPriceDetails().add(priceDetail);

@@ -1,29 +1,30 @@
 package ecr.commerce.promotion;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Promotion {
-    private Set<String> mSkuIds;
-    private boolean     mEnable = false;
+    private Set<String> mProductIds = new HashSet<>();
+    private boolean     mEnable     = false;
     private String      mId;
 
 
 
     /**
-     * @return the skuIds
+     * @return the productIds
      */
-    public Set<String> getSkuIds() {
-        return mSkuIds;
+    public Set<String> getProductIds() {
+        return mProductIds;
     }
 
 
 
     /**
-     * @param pSkuIds
-     *            the skuIds to set
+     * @param pProductIds
+     *            the productIds to set
      */
-    public void setSkuIds(Set<String> pSkuIds) {
-        mSkuIds = pSkuIds;
+    public void setProductIds(Set<String> pProductIds) {
+        mProductIds = pProductIds;
     }
 
 

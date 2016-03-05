@@ -1,5 +1,6 @@
 package ecr.commerce.price;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,9 @@ import java.util.List;
  * @version: 1.0, Mar 4, 2016
  */
 public class PriceInfo {
-    private double            mAmount       = 0d;
-    private double            mSaved        = 0d;
-    private double            mUnitPrice    = 0d;
+    private BigDecimal        mAmount       = new BigDecimal("0");
+    private BigDecimal        mSaved        = new BigDecimal("0");
+    private BigDecimal        mUnitPrice    = new BigDecimal("0");
     private boolean           mDiscounted   = false;
     private List<PriceDetail> mPriceDetails = new ArrayList<>();
 
@@ -22,13 +23,28 @@ public class PriceInfo {
     /**
      * @return the amount
      */
-    public double getAmount() {
-        if (!getPriceDetails().isEmpty()) {
-            for (PriceDetail priceDetail : mPriceDetails) {
-                mAmount = mAmount + priceDetail.getQuantity() * priceDetail.getQuantity();
-            }
-        }
+    public BigDecimal getAmount() {
         return mAmount;
+    }
+
+
+
+    /**
+     * @param pAmount
+     *            the amount to set
+     */
+    public void setAmount(BigDecimal pAmount) {
+        mAmount = pAmount;
+    }
+
+
+
+    /**
+     * @param pSaved
+     *            the saved to set
+     */
+    public void setSaved(BigDecimal pSaved) {
+        mSaved = pSaved;
     }
 
 
@@ -36,14 +52,7 @@ public class PriceInfo {
     /**
      * @return the saved
      */
-    public double getSaved() {
-        if (!getPriceDetails().isEmpty()) {
-            for (PriceDetail priceDetail : mPriceDetails) {
-                if (priceDetail.isDiscounted()) {
-                    mSaved = mSaved + getUnitPrice() * priceDetail.getQuantity() - priceDetail.getAmount();
-                }
-            }
-        }
+    public BigDecimal getSaved() {
         return mSaved;
     }
 
@@ -71,7 +80,7 @@ public class PriceInfo {
     /**
      * @return the unitPrice
      */
-    public double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return mUnitPrice;
     }
 
@@ -81,7 +90,7 @@ public class PriceInfo {
      * @param pUnitPrice
      *            the unitPrice to set
      */
-    public void setUnitPrice(double pUnitPrice) {
+    public void setUnitPrice(BigDecimal pUnitPrice) {
         mUnitPrice = pUnitPrice;
     }
 

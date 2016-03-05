@@ -1,45 +1,78 @@
 package ecr.commerce.test;
 
-import ecr.commerce.order.Order;
-import ecr.commerce.server.ApplicationContext;
+import ecr.commerce.main.CashRegister;
+import ecr.commerce.order.SettlementList;
 
 public class CustomerAction {
-    ApplicationContext mContext;
-    Order              mOrder;
-
-
-
-    public CustomerAction(ApplicationContext pContext) {
-        this.mContext = pContext;
-    }
-
-
-
-    public void createOrder() {
-        this.mOrder = mContext.getOrderTools().createNewOrder();
-    }
+    private CashRegister   mCashRegister   = CashRegister.getCashRegisterInstance();
+    private SettlementList mSettlementList = new SettlementList();
 
 
 
     public void buyCocacola(int pQuantity) {
-        mContext.getOrderTools().addProductToOrder(mContext.getProducts().get("cocacola"), pQuantity, this.mOrder);
+        for (int i = 0; i < pQuantity; i++) {
+            mCashRegister.mOrderTools.addProductToSettlementList(this.mSettlementList,
+                    mCashRegister.mProducts.get("cocacola"), 1);
+        }
     }
 
 
 
     public void buyBadminton(int pQuantity) {
-        mContext.getOrderTools().addProductToOrder(mContext.getProducts().get("badminton"), pQuantity, this.mOrder);
+        for (int i = 0; i < pQuantity; i++) {
+            mCashRegister.mOrderTools.addProductToSettlementList(this.mSettlementList,
+                    mCashRegister.mProducts.get("badminton"), 1);
+        }
     }
 
 
 
     public void buyAppla(int pQuantity) {
-        mContext.getOrderTools().addProductToOrder(mContext.getProducts().get("apple"), pQuantity, this.mOrder);
+        mCashRegister.mOrderTools.addProductToSettlementList(this.mSettlementList, mCashRegister.mProducts.get("apple"),
+                2);
     }
 
 
 
     public void checkout() {
-        
+        mCashRegister.checkout(mSettlementList);
+    }
+
+
+
+    /**
+     * @return the settlementList
+     */
+    public SettlementList getSettlementList() {
+        return mSettlementList;
+    }
+
+
+
+    /**
+     * @param pSettlementList
+     *            the settlementList to set
+     */
+    public void setSettlementList(SettlementList pSettlementList) {
+        mSettlementList = pSettlementList;
+    }
+
+
+
+    /**
+     * @return the cashRegister
+     */
+    public CashRegister getCashRegister() {
+        return mCashRegister;
+    }
+
+
+
+    /**
+     * @param pCashRegister
+     *            the cashRegister to set
+     */
+    public void setCashRegister(CashRegister pCashRegister) {
+        mCashRegister = pCashRegister;
     }
 }

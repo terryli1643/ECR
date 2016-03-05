@@ -1,5 +1,7 @@
 package ecr.commerce.price;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * This PriceDetail object used to save every change of price by a price calculator.
@@ -8,9 +10,10 @@ package ecr.commerce.price;
  * @version: 1.0, Mar 4, 2016
  */
 public class PriceDetail {
-    private int     mQuantity;
-    private double  mAmount;
-    private boolean mDiscounted;
+    private int        mQuantity;
+    private BigDecimal mAmount;
+    private boolean    mDiscounted;
+    private String     mPromotionName;
 
 
 
@@ -36,7 +39,7 @@ public class PriceDetail {
     /**
      * @return the amount
      */
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return mAmount;
     }
 
@@ -46,7 +49,7 @@ public class PriceDetail {
      * @param pAmount
      *            the amount to set
      */
-    public void setAmount(double pAmount) {
+    public void setAmount(BigDecimal pAmount) {
         mAmount = pAmount;
     }
 
@@ -67,6 +70,25 @@ public class PriceDetail {
      */
     public void setDiscounted(boolean pDiscounted) {
         mDiscounted = pDiscounted;
+    }
+
+
+
+    /**
+     * @return the promotionName
+     */
+    public String getPromotionName() {
+        return mPromotionName;
+    }
+
+
+
+    /**
+     * @param pPromotionName
+     *            the promotionName to set
+     */
+    public void setPromotionName(String pPromotionName) {
+        mPromotionName = pPromotionName;
     }
 
 }

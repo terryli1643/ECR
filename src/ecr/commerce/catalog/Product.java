@@ -1,5 +1,7 @@
 package ecr.commerce.catalog;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * The product object. It the mimimum unit that can be bought.
@@ -11,9 +13,10 @@ public class Product {
 
     private String mId;
     private String mDisplayName;
-    private double mUnitPrice;
-    private String mCategoryName;
-    private String mbarCode;
+    private BigDecimal mUnitPrice;
+    private String mCategory;
+    private String mBarCode;
+    private String mUnit;
 
 
 
@@ -39,7 +42,7 @@ public class Product {
     /**
      * @return the unitPrice
      */
-    public double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return mUnitPrice;
     }
 
@@ -49,7 +52,7 @@ public class Product {
      * @param pUnitPrice
      *            the unitPrice to set
      */
-    public void setUnitPrice(double pUnitPrice) {
+    public void setUnitPrice(BigDecimal pUnitPrice) {
         mUnitPrice = pUnitPrice;
     }
 
@@ -75,38 +78,58 @@ public class Product {
 
 
     /**
-     * @return the categoryName
+     * @return the category
      */
-    public String getCategoryName() {
-        return mCategoryName;
+    public String getCategory() {
+        return mCategory;
     }
 
 
 
     /**
-     * @param pCategoryName
-     *            the categoryName to set
+     * @param pCategory
+     *            the category to set
      */
-    public void setCategoryName(String pCategoryName) {
-        mCategoryName = pCategoryName;
+    public void setCategory(String pCategory) {
+        mCategory = pCategory;
     }
 
 
 
     /**
-     * @return the mbarCode
+     * @return the barCode
      */
-    public String getMbarCode() {
-        return mbarCode;
+    public String getBarCode() {
+        return mBarCode;
     }
 
 
 
     /**
-     * @param pMbarCode the mbarCode to set
+     * @param pBarCode
+     *            the barCode to set
      */
-    public void setMbarCode(String pMbarCode) {
-        mbarCode = pMbarCode;
+    public void setBarCode(String pBarCode) {
+        mBarCode = pBarCode;
+    }
+
+
+
+    /**
+     * @return the unit
+     */
+    public String getUnit() {
+        return mUnit;
+    }
+
+
+
+    /**
+     * @param pUnit
+     *            the unit to set
+     */
+    public void setUnit(String pUnit) {
+        mUnit = pUnit;
     }
 
 }

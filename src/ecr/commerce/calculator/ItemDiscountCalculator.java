@@ -1,5 +1,6 @@
 package ecr.commerce.calculator;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import ecr.commerce.order.CommerceItem;
@@ -45,7 +46,7 @@ public class ItemDiscountCalculator implements PricingCalculator {
         if (pPromotion instanceof ItemDiscountPromotion == false) {
             return null;
         }
-        if (!pPromotion.getSkuIds().contains(pCommerceItem.getProductId())) {
+        if (!pPromotion.getProductIds().contains(pCommerceItem.getProductId())) {
             return null;
         }
         QualifiedItem qualifierItem = new QualifiedItem();
@@ -60,11 +61,15 @@ public class ItemDiscountCalculator implements PricingCalculator {
         // Here we only modify the base priceDetail's price because this kind of promotion will aplly to all
         // commerceItem.
         PriceDetail priceDetail = pPriceInfo.getPriceDetails().get(0);
-        priceDetail.setAmount(pPriceInfo.getUnitPrice() * pQualifierItem.getCommerceItem().getQuantity()
-                * pPromotion.getDiscount() / 100);
+        //unitprice * quantity * 95%
+        priceDetail.setAmount(
+                pPriceInfo.getUnitPrice().multiply(new BigDecimal(pQualifierItem.getCommerceItem().getQuantity()))
+                        .multiply(new BigDecimal(pPromotion.getDiscount())).divide(new BigDecimal("100")));
+
         priceDetail.setQuantity(pQualifierItem.getQuantity());
         priceDetail.setDiscounted(true);
-        pPriceInfo.getPriceDetails().add(priceDetail);
+        priceDetail.setPromotionName(pPromotion.getId());
+
         pPriceInfo.setDiscounted(true);
     }
 

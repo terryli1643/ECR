@@ -1,5 +1,7 @@
 package ecr.commerce.pricing;
 
+import java.math.BigDecimal;
+
 import ecr.commerce.price.PriceDetail;
 import ecr.commerce.price.PriceInfo;
 
@@ -11,8 +13,10 @@ public class PricingTools {
 
 
 
-    public PriceInfo createPriceInfo() {
-        return new PriceInfo();
+    public PriceInfo createPriceInfo(BigDecimal pBasicPrice) {
+        PriceInfo priceInfo = new PriceInfo();
+        priceInfo.setUnitPrice(pBasicPrice);
+        return priceInfo;
     }
 
 }

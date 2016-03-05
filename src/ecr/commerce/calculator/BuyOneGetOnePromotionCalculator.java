@@ -1,7 +1,9 @@
 package ecr.commerce.calculator;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
+import ecr.commerce.main.CashRegister;
 import ecr.commerce.order.CommerceItem;
 import ecr.commerce.price.PriceDetail;
 import ecr.commerce.price.PriceInfo;
@@ -12,7 +14,7 @@ import ecr.commerce.promotion.Promotion;
 
 public class BuyOneGetOnePromotionCalculator implements PricingCalculator {
 
-    private PricingTools mPricingTools;
+    private PricingTools mPricingTools = CashRegister.getCashRegisterInstance().getPricingTools();
 
 
 
@@ -42,10 +44,7 @@ public class BuyOneGetOnePromotionCalculator implements PricingCalculator {
         if (pPromotion instanceof BuyOneGetOnePromotion == false) {
             return null;
         }
-        if (!pPromotion.getSkuIds().contains(pCommerceItem.getProductId())) {
-            return null;
-        }
-        if (pPromotion instanceof BuyOneGetOnePromotion) {
+        if (!pPromotion.getProductIds().contains(pCommerceItem.getProductId())) {
             return null;
         }
         QualifiedItem qualifierItem = new QualifiedItem();
@@ -60,12 +59,14 @@ public class BuyOneGetOnePromotionCalculator implements PricingCalculator {
         // Here we need to split the priceDetails into two parts, one part is the base price, the other part is free.
         PriceDetail basePriceDetail = pPriceInfo.getPriceDetails().get(0);
         basePriceDetail.setQuantity(basePriceDetail.getQuantity() - pQualifierItem.getQuantity());
+        basePriceDetail.setAmount(new BigDecimal(basePriceDetail.getQuantity()).multiply(pPriceInfo.getUnitPrice()));
 
         // Create the second part of priceDetails which price is 0.
         PriceDetail priceDetail = getPricingTools().creatPriceDetail();
-        priceDetail.setAmount(0);
+        priceDetail.setAmount(new BigDecimal("0"));
         priceDetail.setQuantity(pQualifierItem.getQuantity());
         priceDetail.setDiscounted(true);
+        priceDetail.setPromotionName(pPromotion.getId());
 
         // Add the second part of priceDetails to the priceInfo.
         pPriceInfo.getPriceDetails().add(priceDetail);
