@@ -15,9 +15,4 @@ public class PricingTools {
         return new PriceInfo();
     }
 
-
-
-    public double findUnitPriceOfSku(String pSkuId) {
-        return 0d;
-    }
 }

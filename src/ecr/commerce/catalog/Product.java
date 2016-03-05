@@ -1,7 +1,5 @@
 package ecr.commerce.catalog;
 
-import java.util.Set;
-
 /**
  * 
  * The product object. It the mimimum unit that can be bought.
@@ -11,11 +9,11 @@ import java.util.Set;
  */
 public class Product {
 
-    private String      mId;
-    private String      mDisplayName;
-    private Set<String> mParentCategory;
-    private double      mUnitPrice;
-    private String      mCategoryName;
+    private String mId;
+    private String mDisplayName;
+    private double mUnitPrice;
+    private String mCategoryName;
+    private String mbarCode;
 
 
 
@@ -34,25 +32,6 @@ public class Product {
      */
     public void setDisplayName(String pDisplayName) {
         mDisplayName = pDisplayName;
-    }
-
-
-
-    /**
-     * @return the parentCategory
-     */
-    public Set<String> getParentCategory() {
-        return mParentCategory;
-    }
-
-
-
-    /**
-     * @param pParentCategory
-     *            the parentCategory to set
-     */
-    public void setParentCategory(Set<String> pParentCategory) {
-        mParentCategory = pParentCategory;
     }
 
 
@@ -110,6 +89,24 @@ public class Product {
      */
     public void setCategoryName(String pCategoryName) {
         mCategoryName = pCategoryName;
+    }
+
+
+
+    /**
+     * @return the mbarCode
+     */
+    public String getMbarCode() {
+        return mbarCode;
+    }
+
+
+
+    /**
+     * @param pMbarCode the mbarCode to set
+     */
+    public void setMbarCode(String pMbarCode) {
+        mbarCode = pMbarCode;
     }
 
 }

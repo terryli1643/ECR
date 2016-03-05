@@ -8,9 +8,9 @@ package ecr.commerce.price;
  * @version: 1.0, Mar 4, 2016
  */
 public class PriceDetail {
-    private int       mQuantity;
-    private double    mAmount;
-    private PriceInfo mDetailPriceInfo;
+    private int     mQuantity;
+    private double  mAmount;
+    private boolean mDiscounted;
 
 
 
@@ -53,20 +53,20 @@ public class PriceDetail {
 
 
     /**
-     * @return the detailPriceInfo
+     * @return the discounted
      */
-    public PriceInfo getDetailPriceInfo() {
-        return mDetailPriceInfo;
+    public boolean isDiscounted() {
+        return mDiscounted;
     }
 
 
 
     /**
-     * @param pDetailPriceInfo
-     *            the detailPriceInfo to set
+     * @param pDiscounted
+     *            the discounted to set
      */
-    public void setDetailPriceInfo(PriceInfo pDetailPriceInfo) {
-        mDetailPriceInfo = pDetailPriceInfo;
+    public void setDiscounted(boolean pDiscounted) {
+        mDiscounted = pDiscounted;
     }
 
 }

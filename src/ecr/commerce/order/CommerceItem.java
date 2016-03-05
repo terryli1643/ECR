@@ -4,33 +4,35 @@ import ecr.commerce.price.PriceInfo;
 
 /**
  * 
- * COmmerceItem is stand for a sku object with a qantity and price when it is added to cart.
+ * COmmerceItem is stand for a product object with a qantity and price when it is added to cart.
  * 
  * @author: terryli
  * @version: 1.0, Mar 4, 2016
  */
 public class CommerceItem {
-    private String    mSkuId;
+    private String    mProductId;
     private PriceInfo mPriceInfo;
     private int       mQuantity;
 
 
 
+
+
+
     /**
-     * @return the skuId
+     * @return the productId
      */
-    public String getSkuId() {
-        return mSkuId;
+    public String getProductId() {
+        return mProductId;
     }
 
 
 
     /**
-     * @param pSkuId
-     *            the skuId to set
+     * @param pProductId the productId to set
      */
-    public void setSkuId(String pSkuId) {
-        mSkuId = pSkuId;
+    public void setProductId(String pProductId) {
+        mProductId = pProductId;
     }
 
 

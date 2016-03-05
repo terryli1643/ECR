@@ -1,7 +1,6 @@
 package ecr.commerce.pricing;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import ecr.commerce.calculator.PricingCalculator;
@@ -18,9 +17,15 @@ import ecr.commerce.promotion.Promotion;
  * @version: 1.0, Mar 4, 2016
  */
 public class PricingEngine {
-    private List<PricingCalculator> mCalculators;
-    private Promotion               mPromotions;
-    private PricingTools            mPricingTools;
+    private PricingCalculator[]   mCalculators;
+    private Collection<Promotion> mPromotions;
+    private PricingTools          mPricingTools;
+
+
+
+    public PricingEngine(PricingCalculator... calculators) {
+        mCalculators = calculators;
+    }
 
 
 
@@ -29,50 +34,12 @@ public class PricingEngine {
         PriceInfo priceInfo = pCommerceItem.getPriceInfo();
         if (priceInfo == null) {
             PriceInfo info = getPricingTools().createPriceInfo();
-            for (PricingCalculator calculator : getCalculators()) {
-                calculator.priceItem(info, pCommerceItem, getPromotions(), pParameters);
+            for (PricingCalculator calculator : mCalculators) {
+                calculator.priceItem(info, pCommerceItem, getPromotions());
             }
             pCommerceItem.setPriceInfo(info);
         }
         return null;
-    }
-
-
-
-    /**
-     * @return the calculators
-     */
-    public List<PricingCalculator> getCalculators() {
-        return mCalculators;
-    }
-
-
-
-    /**
-     * @param pCalculators
-     *            the calculators to set
-     */
-    public void setCalculators(List<PricingCalculator> pCalculators) {
-        mCalculators = pCalculators;
-    }
-
-
-
-    /**
-     * @return the promotions
-     */
-    public Promotion getPromotions() {
-        return mPromotions;
-    }
-
-
-
-    /**
-     * @param pPromotions
-     *            the promotions to set
-     */
-    public void setPromotions(Promotion pPromotions) {
-        mPromotions = pPromotions;
     }
 
 
@@ -87,10 +54,19 @@ public class PricingEngine {
 
 
     /**
-     * @param pPricingTools
-     *            the pricingTools to set
+     * @return the promotions
      */
-    public void setPricingTools(PricingTools pPricingTools) {
-        mPricingTools = pPricingTools;
+    public Collection<Promotion> getPromotions() {
+        return mPromotions;
+    }
+
+
+
+    /**
+     * @param pPromotions
+     *            the promotions to set
+     */
+    public void setPromotions(Collection<Promotion> pPromotions) {
+        mPromotions = pPromotions;
     }
 }

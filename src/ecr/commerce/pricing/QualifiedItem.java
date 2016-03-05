@@ -1,5 +1,7 @@
 package ecr.commerce.pricing;
 
+import ecr.commerce.order.CommerceItem;
+
 /**
  * The QualifiedItem class holds information about a CommerceItem that qualifies for a discount.
  * 
@@ -7,9 +9,9 @@ package ecr.commerce.pricing;
  * @version: 1.0, Mar 4, 2016
  */
 public class QualifiedItem {
-    private int    mQuantity;
-    private int    mCommerceItem;
-    private double mDiscount;
+    private int          mQuantity;
+    private CommerceItem mCommerceItem;
+    private double       mDiscount;
 
 
 
@@ -33,25 +35,6 @@ public class QualifiedItem {
 
 
     /**
-     * @return the commerceItem
-     */
-    public int getCommerceItem() {
-        return mCommerceItem;
-    }
-
-
-
-    /**
-     * @param pCommerceItem
-     *            the commerceItem to set
-     */
-    public void setCommerceItem(int pCommerceItem) {
-        mCommerceItem = pCommerceItem;
-    }
-
-
-
-    /**
      * @return the discount
      */
     public double getDiscount() {
@@ -66,5 +49,24 @@ public class QualifiedItem {
      */
     public void setDiscount(double pDiscount) {
         mDiscount = pDiscount;
+    }
+
+
+
+    /**
+     * @return the commerceItem
+     */
+    public CommerceItem getCommerceItem() {
+        return mCommerceItem;
+    }
+
+
+
+    /**
+     * @param pCommerceItem
+     *            the commerceItem to set
+     */
+    public void setCommerceItem(CommerceItem pCommerceItem) {
+        mCommerceItem = pCommerceItem;
     }
 }

@@ -5,17 +5,17 @@ import java.util.List;
 
 /**
  * 
-* This priceInfo is used for comerceItem, and this object is calculated by a lot of logics.
-*		
-* @author: terryli
-* @version: 1.0, Mar 4, 2016
+ * This priceInfo is used for comerceItem, and this object is calculated by a lot of logics.
+ * 
+ * @author: terryli
+ * @version: 1.0, Mar 4, 2016
  */
 public class PriceInfo {
-    private double            mAmount;
-    private double            mDiscount;
-    private double            mUnitPrice;
-    private List<Adjustment>  mPricingAdjustment;
-    private List<PriceDetail> mPriceDetails = new ArrayList<PriceDetail>(1);
+    private double            mAmount       = 0d;
+    private double            mSaved        = 0d;
+    private double            mUnitPrice    = 0d;
+    private boolean           mDiscounted   = false;
+    private List<PriceDetail> mPriceDetails = new ArrayList<>();
 
 
 
@@ -23,55 +23,28 @@ public class PriceInfo {
      * @return the amount
      */
     public double getAmount() {
+        if (!getPriceDetails().isEmpty()) {
+            for (PriceDetail priceDetail : mPriceDetails) {
+                mAmount = mAmount + priceDetail.getQuantity() * priceDetail.getQuantity();
+            }
+        }
         return mAmount;
     }
 
 
 
     /**
-     * @param pAmount
-     *            the amount to set
+     * @return the saved
      */
-    public void setAmount(double pAmount) {
-        mAmount = pAmount;
-    }
-
-
-
-    /**
-     * @return the discount
-     */
-    public double getDiscount() {
-        return mDiscount;
-    }
-
-
-
-    /**
-     * @param pDiscount
-     *            the discount to set
-     */
-    public void setDiscount(double pDiscount) {
-        mDiscount = pDiscount;
-    }
-
-
-
-    /**
-     * @return the pricingAdjustment
-     */
-    public List<Adjustment> getPricingAdjustment() {
-        return mPricingAdjustment;
-    }
-
-
-
-    /**
-     * @param pPricingAdjustment
-     *            the pricingAdjustment to set
-     */
-    public void setPricingAdjustment(List<Adjustment> pPricingAdjustment) {
-        mPricingAdjustment = pPricingAdjustment;
+    public double getSaved() {
+        if (!getPriceDetails().isEmpty()) {
+            for (PriceDetail priceDetail : mPriceDetails) {
+                if (priceDetail.isDiscounted()) {
+                    mSaved = mSaved + getUnitPrice() * priceDetail.getQuantity() - priceDetail.getAmount();
+                }
+            }
+        }
+        return mSaved;
     }
 
 
@@ -110,6 +83,25 @@ public class PriceInfo {
      */
     public void setUnitPrice(double pUnitPrice) {
         mUnitPrice = pUnitPrice;
+    }
+
+
+
+    /**
+     * @return the discounted
+     */
+    public boolean isDiscounted() {
+        return mDiscounted;
+    }
+
+
+
+    /**
+     * @param pDiscounted
+     *            the discounted to set
+     */
+    public void setDiscounted(boolean pDiscounted) {
+        mDiscounted = pDiscounted;
     }
 
 }
