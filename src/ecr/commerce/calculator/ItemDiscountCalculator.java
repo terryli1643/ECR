@@ -36,6 +36,16 @@ public class ItemDiscountCalculator implements PricingCalculator {
 
 
 
+    /**
+     * 
+     * Judge the current promotion if will be applied.
+     *
+     * @param pCommerceItem
+     *            commerceItem
+     * @param pPromotion
+     *            promotion
+     * @return QualifiedItem: this item stand for a count of commercrItems will be appleid the promotion.
+     */
     public QualifiedItem qualifier(PriceInfo pPriceInfo, CommerceItem pCommerceItem, Promotion pPromotion) {
         if (!pPromotion.isEnable()) {
             return null;
@@ -57,11 +67,24 @@ public class ItemDiscountCalculator implements PricingCalculator {
 
 
 
+    /**
+     * 
+     * This method is responsible for the main logic for calculating the promotion.
+     *
+     * @param pPriceInfo
+     *            PriceInfo
+     * @param pQualifierItem
+     *            QualifierItem
+     * @param pCommerceItem
+     *            CommerceItem
+     * @param pPromotion
+     *            Promotion
+     */
     public void adjust(PriceInfo pPriceInfo, QualifiedItem pQualifierItem, ItemDiscountPromotion pPromotion) {
         // Here we only modify the base priceDetail's price because this kind of promotion will aplly to all
         // commerceItem.
         PriceDetail priceDetail = pPriceInfo.getPriceDetails().get(0);
-        //unitprice * quantity * 95%
+        // unitprice * quantity * 95%
         priceDetail.setAmount(
                 pPriceInfo.getUnitPrice().multiply(new BigDecimal(pQualifierItem.getCommerceItem().getQuantity()))
                         .multiply(new BigDecimal(pPromotion.getDiscount())).divide(new BigDecimal("100")));

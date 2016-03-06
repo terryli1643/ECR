@@ -1,6 +1,15 @@
 package ecr.commerce.promotion;
 
-public class BuyOneGetOnePromotion extends Promotion{
+/**
+ * 
+ * This is a type of promotion, it has two properties which are DiscountConditionquantity and DiscountOfferquantity.
+ * DiscountConditionquantity indicate how many products added to the cart, the promotion is qualified.
+ * DiscountOfferquantity indicate how many product is free.
+ * 
+ * @author: Terry
+ * @version: 1.0, Mar 4, 2016
+ */
+public class BuyOneGetOnePromotion extends Promotion {
     private int mDiscountConditionquantity;
     private int mDiscountOfferquantity;
 

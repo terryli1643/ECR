@@ -4,17 +4,24 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * This class is resposible for collect all information from the order and price Receipt.
+ * 
+ * @author: Terry
+ * @version: 1.0, Mar 5, 2016
+ */
 public class ReceiptTempalte {
-    private List<Item> mItems         = new ArrayList<Item>();
-    private List<Item> mDiscountItems = new ArrayList<Item>();
-    private BigDecimal mTotal;
-    private BigDecimal mSave;
+    private List<PrintItem> mItems         = new ArrayList<PrintItem>();
+    private List<PrintItem> mDiscountItems = new ArrayList<PrintItem>();
+    private BigDecimal      mTotal;
+    private BigDecimal      mSave;
 
 
 
     public void print() {
         System.out.println("***<没钱赚商店>购物清单***");
-        for (Item item : mItems) {
+        for (PrintItem item : mItems) {
             System.out.print("名称：");
             System.out.print(item.getName());
             System.out.print(",数量：");
@@ -31,13 +38,13 @@ public class ReceiptTempalte {
             System.out.println();
         }
         System.out.println("----------------------");
-        for (Item item : mDiscountItems) {
-            if (item.getPromotionName() != null && item.getPromotionName().equals("")) {
+        for (PrintItem item : mDiscountItems) {
+            if (item.getPromotionName() != null && item.getPromotionName().equals("BuyTwoGetOne")) {
                 System.out.println("买二赠一商品：");
                 break;
             }
         }
-        for (Item item : mDiscountItems) {
+        for (PrintItem item : mDiscountItems) {
             System.out.print("名称：");
             System.out.print(item.getName());
             System.out.print(",数量：");
@@ -46,15 +53,18 @@ public class ReceiptTempalte {
         System.out.println("----------------------");
         System.out.print("总计：");
         System.out.println(mTotal + "(元)");
-        System.out.print("节省：");
-        System.out.println(mSave + "(元)");
+        if (mSave.doubleValue() > 0) {
+            System.out.print("节省：");
+            System.out.println(mSave + "(元)");
+        }
+
         System.out.println("**********************");
     }
 
 
 
-    public Item newItem() {
-        Item item = new Item();
+    public PrintItem newItem() {
+        PrintItem item = new PrintItem();
         return item;
     }
 
@@ -101,7 +111,7 @@ public class ReceiptTempalte {
     /**
      * @return the items
      */
-    public List<Item> getItems() {
+    public List<PrintItem> getItems() {
         return mItems;
     }
 
@@ -111,7 +121,7 @@ public class ReceiptTempalte {
      * @param pItems
      *            the items to set
      */
-    public void setItems(List<Item> pItems) {
+    public void setItems(List<PrintItem> pItems) {
         mItems = pItems;
     }
 
@@ -120,7 +130,7 @@ public class ReceiptTempalte {
     /**
      * @return the discountItems
      */
-    public List<Item> getDiscountItems() {
+    public List<PrintItem> getDiscountItems() {
         return mDiscountItems;
     }
 
@@ -130,11 +140,11 @@ public class ReceiptTempalte {
      * @param pDiscountItems
      *            the discountItems to set
      */
-    public void setDiscountItems(List<Item> pDiscountItems) {
+    public void setDiscountItems(List<PrintItem> pDiscountItems) {
         mDiscountItems = pDiscountItems;
     }
 
-    class Item {
+    class PrintItem {
 
         private String     mName;
         private int        mQuantity;
@@ -146,8 +156,8 @@ public class ReceiptTempalte {
 
 
 
-        public Item addOne() {
-            Item item = new Item();
+        public PrintItem addOne() {
+            PrintItem item = new PrintItem();
             return item;
         }
 

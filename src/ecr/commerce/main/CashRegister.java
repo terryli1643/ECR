@@ -78,7 +78,7 @@ public class CashRegister {
         Product cocacola = new Product();
         cocacola.setId("cocacola");
         cocacola.setDisplayName("可口可乐");
-        cocacola.setBarCode("ITEM000003");
+        cocacola.setBarCode("ITEM000005");
         cocacola.setUnitPrice(new BigDecimal("3"));
         cocacola.setUnit("瓶");
 
@@ -92,7 +92,7 @@ public class CashRegister {
         Product apple = new Product();
         apple.setId("apple");
         apple.setDisplayName("苹果");
-        apple.setBarCode("ITEM000005");
+        apple.setBarCode("ITEM000003");
         apple.setUnitPrice(new BigDecimal("5.5"));
         apple.setUnit("斤");
 

@@ -25,12 +25,31 @@ public class UnitPriceCalculator implements PricingCalculator {
 
 
     @Override
+    /**
+     * 
+     * @see ecr.commerce.calculator.PricingCalculator#priceItem(ecr.commerce.price.PriceInfo,
+     *      ecr.commerce.order.CommerceItem, java.util.Collection)
+     */
     public void priceItem(PriceInfo pPriceInfo, CommerceItem pCommerceItem, Collection<Promotion> pPromotion) {
         adjust(pPriceInfo, pCommerceItem);
     }
 
 
 
+    /**
+     * 
+     * This method is responsible for the main logic for calculating the promotion. In this calculator, it only set the
+     * unit price as a basic price.
+     *
+     * @param pPriceInfo
+     *            PriceInfo
+     * @param pQualifierItem
+     *            QualifierItem
+     * @param pCommerceItem
+     *            CommerceItem
+     * @param pPromotion
+     *            Promotion
+     */
     public void adjust(PriceInfo pPriceInfo, CommerceItem pCommerceItem) {
         // Here we just set a base price to the priceDetail which used to calculate promotion price. The base price is
         // unit price.

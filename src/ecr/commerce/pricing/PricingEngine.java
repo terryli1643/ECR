@@ -34,7 +34,7 @@ public class PricingEngine {
 
 
     public void priceItem(CommerceItem pCommerceItem) {
-        Product product = getOrderTools().findProductByBarId(pCommerceItem.getProductId());
+        Product product = getOrderTools().findProductByBarcode(pCommerceItem.getProductId());
         PriceInfo info = getPricingTools().createPriceInfo(product.getUnitPrice());
         pCommerceItem.setPriceInfo(info);
         for (PricingCalculator calculator : mCalculators) {

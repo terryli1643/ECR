@@ -5,9 +5,15 @@ import java.util.List;
 
 import ecr.commerce.catalog.Product;
 import ecr.commerce.main.CashRegister;
-import ecr.commerce.order.ReceiptTempalte.Item;
+import ecr.commerce.order.ReceiptTempalte.PrintItem;
 import ecr.commerce.price.PriceDetail;
 
+/**
+ * A utilities methods class for order.
+ * 
+ * @author: terryli
+ * @version: 1.0, Mar 4, 2016
+ */
 public class OrderTools {
 
     /**
@@ -33,6 +39,13 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Parse a json format barCode to a barcode list.
+     *
+     * @param pJson
+     * @return
+     */
     public List<String> parseJsonToList(String pJson) {
         String temp = pJson.substring(1, pJson.length() - 1);
         String[] jsonItems = temp.split(",");
@@ -45,6 +58,13 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Add products to order by the product barcode list.
+     *
+     * @param pSettlementList
+     * @param pOrder
+     */
     public void addProductsToOrder(String pSettlementList, Order pOrder) {
         Product product = null;
         for (Object barCode : parseJsonToList(pSettlementList)) {
@@ -55,6 +75,14 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Add s single product to the order.
+     *
+     * @param pProduct
+     * @param pQuantity
+     * @param pOrder
+     */
     public void addProductToOrder(Product pProduct, int pQuantity, Order pOrder) {
         for (CommerceItem commerceItem : pOrder.getCommerceItems()) {
             // If current product already in the Order, just increase the quantity by 1.
@@ -63,12 +91,19 @@ public class OrderTools {
                 return;
             }
         }
-        CommerceItem commerceItem = createCommerceItme(pProduct, pQuantity);
+        CommerceItem commerceItem = createCommerceItem(pProduct, pQuantity);
         pOrder.getCommerceItems().add(commerceItem);
     }
 
 
 
+    /**
+     * 
+     * Parse the quantity from original barcode.
+     *
+     * @param pBarCode
+     * @return
+     */
     public int getProductquantityFromBarCode(String pBarCode) {
         if (pBarCode != null && pBarCode.contains("-")) {
             return Integer.parseInt(pBarCode.split("-")[1]);
@@ -79,6 +114,13 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Parse the barcode from original barcode.
+     *
+     * @param pBarCode
+     * @return
+     */
     public Product findProductByBarCode(String pBarCode) {
         String barCode = pBarCode;
         if (pBarCode != null && pBarCode.contains("-")) {
@@ -94,7 +136,14 @@ public class OrderTools {
 
 
 
-    public Product findProductByBarId(String pProductId) {
+    /**
+     * 
+     * Find product id by barcode.
+     *
+     * @param pProductId
+     * @return
+     */
+    public Product findProductByBarcode(String pProductId) {
         for (Product product : CashRegister.getCashRegisterInstance().mProducts.values()) {
             if (product.getId().equals(pProductId)) {
                 return product;
@@ -105,6 +154,12 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Create a order object.
+     *
+     * @return
+     */
     public Order createOrder() {
         Order order = new Order();
         return order;
@@ -112,7 +167,15 @@ public class OrderTools {
 
 
 
-    public CommerceItem createCommerceItme(Product pProduct, int pQuantity) {
+    /**
+     * 
+     * Create a commerceItem object.
+     *
+     * @param pProduct
+     * @param pQuantity
+     * @return
+     */
+    public CommerceItem createCommerceItem(Product pProduct, int pQuantity) {
         CommerceItem commerceItem = new CommerceItem();
         commerceItem.setProductId(pProduct.getId());
         commerceItem.setQuantity(pQuantity);
@@ -121,6 +184,14 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Add product barcode to Settlement List.
+     *
+     * @param pSettlementList
+     * @param pProduct
+     * @param pQuantity
+     */
     public void addProductToSettlementList(SettlementList pSettlementList, Product pProduct, int pQuantity) {
         String barCode = pProduct.getBarCode();
         if (pQuantity != 1) {
@@ -131,31 +202,37 @@ public class OrderTools {
 
 
 
+    /**
+     * 
+     * Print Receipt.
+     *
+     * @param pOrder
+     */
     public void printReceipt(Order pOrder) {
         if (pOrder.getCommerceItems() != null && pOrder.getCommerceItems().size() > 0) {
-            ReceiptTempalte receiptTempalte = createReceiptTempalte();
+            ReceiptTempalte receiptTempalte = createReceiptTemplate();
             for (CommerceItem commerceItem : pOrder.getCommerceItems()) {
-                Product product = findProductByBarId(commerceItem.getProductId());
+                Product product = findProductByBarcode(commerceItem.getProductId());
                 if (product != null) {
                     // Set item property.
-                    Item item = receiptTempalte.newItem();
-                    receiptTempalte.getItems().add(item);
-                    item.setName(product.getDisplayName());
-                    item.setQuantity(commerceItem.getQuantity());
-                    item.setUnitPrice(commerceItem.getPriceInfo().getUnitPrice());
-                    item.setSubtotal(commerceItem.getPriceInfo().getAmount());
-                    item.setSave(commerceItem.getPriceInfo().getSaved());
-                    item.setUnit(product.getUnit());
-                    item.setPromotionName(commerceItem.getPriceInfo().getPriceDetails().get(0).getPromotionName());
+                    PrintItem printItem = receiptTempalte.newItem();
+                    receiptTempalte.getItems().add(printItem);
+                    printItem.setName(product.getDisplayName());
+                    printItem.setQuantity(commerceItem.getQuantity());
+                    printItem.setUnitPrice(commerceItem.getPriceInfo().getUnitPrice());
+                    printItem.setSubtotal(commerceItem.getPriceInfo().getAmount());
+                    printItem.setSave(commerceItem.getPriceInfo().getSaved());
+                    printItem.setUnit(product.getUnit());
+                    printItem.setPromotionName(findPromotionApplied(commerceItem));
+
                     if (commerceItem.getPriceInfo().getPriceDetails().size() > 1) {
-                        PriceDetail priceDetail = commerceItem.getPriceInfo().getPriceDetails().get(1);
                         // Set discounted item property.
-                        Item discountedItem = receiptTempalte.newItem();
-                        receiptTempalte.getDiscountItems().add(discountedItem);
-                        discountedItem.setName(product.getDisplayName());
-                        discountedItem.setQuantity(priceDetail.getQuantity());
-                        discountedItem.setUnit(product.getUnit());
-                        discountedItem.setPromotionName(priceDetail.getPromotionName());
+                        PrintItem discountedPrintItem = receiptTempalte.newItem();
+                        receiptTempalte.getDiscountItems().add(discountedPrintItem);
+                        discountedPrintItem.setName(product.getDisplayName());
+                        discountedPrintItem.setQuantity(findDiscountQuantity(commerceItem));
+                        discountedPrintItem.setUnit(product.getUnit());
+                        discountedPrintItem.setPromotionName(findPromotionApplied(commerceItem));
                     }
                 }
             }
@@ -167,7 +244,51 @@ public class OrderTools {
 
 
 
-    public ReceiptTempalte createReceiptTempalte() {
+    /**
+     * 
+     * Find the promotion id which is applied .
+     *
+     * @param pCommerceItem
+     * @return
+     */
+    public String findPromotionApplied(CommerceItem pCommerceItem) {
+        List<PriceDetail> priceDetails = pCommerceItem.getPriceInfo().getPriceDetails();
+        for (PriceDetail priceDetail : priceDetails) {
+            if (priceDetail.isDiscounted() && priceDetail.getPromotionName() != null) {
+                return priceDetail.getPromotionName();
+            }
+        }
+        return null;
+    }
+
+
+
+    /**
+     * 
+     * Find the quantity of commerceItem which is applied the promotion.
+     *
+     * @param pCommerceItem
+     * @return
+     */
+    public int findDiscountQuantity(CommerceItem pCommerceItem) {
+        List<PriceDetail> priceDetails = pCommerceItem.getPriceInfo().getPriceDetails();
+        for (PriceDetail priceDetail : priceDetails) {
+            if (priceDetail.isDiscounted() && priceDetail.getPromotionName() != null) {
+                return priceDetail.getQuantity();
+            }
+        }
+        return 0;
+    }
+
+
+
+    /**
+     * 
+     * Create receipt template object.
+     *
+     * @return
+     */
+    public ReceiptTempalte createReceiptTemplate() {
         return new ReceiptTempalte();
     }
 
