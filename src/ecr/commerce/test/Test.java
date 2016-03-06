@@ -19,7 +19,7 @@ public class Test {
         CustomerAction customerAction = new CustomerAction();
         customerAction.buyCocacola(3);
         customerAction.buyBadminton(5);
-        customerAction.buyAppla(1);
+        customerAction.buyAppla(2);
         customerAction.checkout();
     }
 

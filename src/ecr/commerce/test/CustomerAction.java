@@ -29,7 +29,7 @@ public class CustomerAction {
 
     public void buyAppla(int pQuantity) {
         mCashRegister.mOrderTools.addProductToSettlementList(this.mSettlementList, mCashRegister.mProducts.get("apple"),
-                2);
+                pQuantity);
     }
 
 
