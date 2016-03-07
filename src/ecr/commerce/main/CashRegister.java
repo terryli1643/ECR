@@ -38,7 +38,7 @@ public class CashRegister {
 
 
     private CashRegister() {
-
+        start();
     }
 
 
