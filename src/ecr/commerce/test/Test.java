@@ -9,6 +9,7 @@ public class Test {
     public void test1() {
         // 当购买的商品中，有符合“买二赠一”优惠条件的商品时：
         CashRegister cashRegister = CashRegister.getCashRegisterInstance();
+        cashRegister.start();
         // Here the "Buy two get one" promotion set to all products but only cocacola and badminton are applied.
         Promotion buyTwoGetOne = cashRegister.getPromotions().get("BuyTwoGetOne");
         buyTwoGetOne.getProductIds().add("cocacola");
@@ -28,6 +29,7 @@ public class Test {
     public void test2() {
         // 当购买的商品中，没有符合“买二赠一”优惠条件的商品时：
         CashRegister cashRegister = CashRegister.getCashRegisterInstance();
+        cashRegister.start();
         // Here has no promotion enabled.
         CustomerAction customerAction = new CustomerAction();
         customerAction.buyCocacola(3);
@@ -42,6 +44,7 @@ public class Test {
     public void test3() {
         // 当购买的商品中，有符合“95折”优惠条件的商品时:
         CashRegister cashRegister = CashRegister.getCashRegisterInstance();
+        cashRegister.start();
         // Here the "95% discount" promotion set to apple product.
         Promotion ninetyFivePercentDiscount = cashRegister.getPromotions().get("95%Discount");
         ninetyFivePercentDiscount.getProductIds().add("apple");
@@ -60,6 +63,7 @@ public class Test {
     public void test4() {
         // 当购买的商品中，有符合“95折”优惠条件的商品，又有符合“买二赠一”优惠条件的商品时
         CashRegister cashRegister = CashRegister.getCashRegisterInstance();
+        cashRegister.start();
         // Here the "Buy two get one" promotion set to all products. And the "95% discount" promotion set to apple
         // product.
         Promotion buyTwoGetOne = cashRegister.getPromotions().get("BuyTwoGetOne");
