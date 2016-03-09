@@ -8,7 +8,6 @@ import ecr.commerce.calculator.BuyOneGetOnePromotionCalculator;
 import ecr.commerce.calculator.ItemDiscountCalculator;
 import ecr.commerce.calculator.UnitPriceCalculator;
 import ecr.commerce.catalog.Product;
-import ecr.commerce.order.CommerceItem;
 import ecr.commerce.order.Order;
 import ecr.commerce.order.OrderTools;
 import ecr.commerce.order.SettlementList;
