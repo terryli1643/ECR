@@ -6,6 +6,7 @@ import java.util.Collection;
 import ecr.commerce.calculator.PricingCalculator;
 import ecr.commerce.catalog.Product;
 import ecr.commerce.order.CommerceItem;
+import ecr.commerce.order.Order;
 import ecr.commerce.order.OrderTools;
 import ecr.commerce.price.PriceDetail;
 import ecr.commerce.price.PriceInfo;
@@ -52,6 +53,14 @@ public class PricingEngine {
         BigDecimal save = new BigDecimal(pCommerceItem.getQuantity()).multiply(product.getUnitPrice())
                 .subtract(info.getAmount());
         info.setSaved(save);
+    }
+
+
+
+    public void priceOrder(Order pOrder) {
+        for (CommerceItem commerceItem : pOrder.getCommerceItems()) {
+            priceItem(commerceItem);
+        }
     }
 
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 
- * This class is resposible for collect all information from the order and price Receipt.
+ * This class is resposible for collect all information from the order and print Receipt.
  * 
  * @author: Terry
  * @version: 1.0, Mar 5, 2016

@@ -65,9 +65,7 @@ public class CashRegister {
         System.out.println(json);
 
         mOrderTools.addProductsToOrder(json, order);
-        for (CommerceItem commerceItem : order.getCommerceItems()) {
-            mPricingEngine.priceItem(commerceItem);
-        }
+        mPricingEngine.priceOrder(order);
         mOrderTools.printReceipt(order);
     }
 
